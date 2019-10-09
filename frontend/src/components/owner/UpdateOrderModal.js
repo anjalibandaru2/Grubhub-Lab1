@@ -43,7 +43,7 @@ export class UpdateOrderModal extends Component{
         }
         await axios({
             method: 'post',
-            url: "http://localhost:3001/updateOrderStatus",        
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/updateOrderStatus",        
             data,
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })

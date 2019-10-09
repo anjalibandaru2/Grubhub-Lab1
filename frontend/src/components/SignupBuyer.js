@@ -13,14 +13,14 @@ export class SignupBuyer extends Component{
         this.state.displayMessage = "";
         this.submitHandler = this.submitHandler.bind(this);
     }
-    //backend="http://localhost:3001/signupbuyer";
+    //backend="http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/signupbuyer";
     async submitHandler(evt){
         evt.preventDefault();
         console.log(evt.target);
         var formData = new FormData(evt.target);
         await axios({
             method: 'post',
-            url: "http://localhost:3001/signupbuyer",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/signupbuyer",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: { "name": formData.get('name'), "email": formData.get('email'), "password": formData.get('password') },
             config: { headers: { 'Content-Type': 'multipart/form-data' } }

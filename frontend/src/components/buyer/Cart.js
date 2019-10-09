@@ -9,12 +9,14 @@ export class Cart extends Component{
     state={
         isRendered : false,
         cartItems : "",
-        orderPlacedMessage : ""
+        orderPlacedMessage : "",
+        totalPrice : 0
     };
     constructor(props){
         super(props);
         this.state.isRendered = false;
         this.state.cartItems = "";
+        this.state.totalPrice = 0;
     }
     componentDidMount = async()=>{
         axios.defaults.withCredentials = true;
@@ -24,7 +26,7 @@ export class Cart extends Component{
         }
         await axios({
             method: 'post',
-            url: "http://localhost:3001/getCart",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getCart",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -58,9 +60,9 @@ export class Cart extends Component{
         };
         await axios({
             method: 'post',
-            url: "http://localhost:3001/placeOrder",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/placeOrder",
             // data: {"jsonData" : JSON.stringify(data)},        
-            data: {buyer_id : buyer_id},
+            data: {buyer_id : buyer_id, totalPrice : this.state.totalPrice},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })
             .then((response) => {
@@ -93,16 +95,27 @@ export class Cart extends Component{
                     <Col xs={3}>{item.item_name}</Col>
                     <Col xs={3}>{item.item_quantity}</Col>
                     <Col xs={3}>{item.item_calculatedPrice}</Col>
-                    <Col xs={3}>put delete icon</Col>
                 </Row>
             );
         }
         let itemsList =[];
+        var totalPrice = 0;
         for(let index = 0; index < this.state.cartItems.length; index++){
             let item = this.state.cartItems[index];
+            totalPrice += item.item_calculatedPrice;
             itemsList.push(renderListItem(item, index));
         }
-       return  (<div>{itemsList}</div>)
+        if(this.state.totalPrice != totalPrice){
+            this.setState({
+                totalPrice : totalPrice
+            });
+        }
+       return  (
+       <div>
+        {itemsList}
+        <Row>Total Price : {totalPrice}</Row>
+       </div>
+       )
     }
 
     render(){

@@ -14,13 +14,13 @@ var checkIfEmpty = (item) => {
 router.post("/placeOrder", async function(req, res){
     console.log(req.body);
     var responseObj = {};
-    let {buyer_id} = req.body;
+    let {buyer_id, totalPrice} = req.body;
     try{
         if(checkIfEmpty(buyer_id)){
             responseObj.status = false;
             responseObj.message = "Please Enter all the details";
         } else {
-            responseObj = await orderAccessBuyer.placeOrder(buyer_id);
+            responseObj = await orderAccessBuyer.placeOrder(buyer_id, totalPrice);
         }
     } catch(e) {
         console.log(e);

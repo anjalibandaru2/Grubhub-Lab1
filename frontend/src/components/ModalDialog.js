@@ -74,7 +74,7 @@ export class ModalDialog extends Component{
        let addData = {};
        await axios({
         method: 'post',
-        url: "http://localhost:3001/addItem",
+        url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/addItem",
         // data: {"jsonData" : JSON.stringify(data)},        
         data : form_data,
         headers: {'Content-Type': 'multipart/form-data'} 

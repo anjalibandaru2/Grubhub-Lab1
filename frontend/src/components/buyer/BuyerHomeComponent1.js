@@ -7,12 +7,15 @@ import axios from 'axios';
 export class BuyerHomeComponent1 extends Component {
     state={
         itemOrCuisine : "",
-        cuisineList : ""
+        cuisineList : "",
+        isCuisineFilterPresent : false,
+        restaurantsList : []
     }
     constructor(props){
         super(props);
         this.itemOrCuisine = "";
         this.state.cuisineList = "";
+        this.state.restaurantsList = [];
         this.changeHandler = this.changeHandler.bind(this);
         this.filterRestaurants = this.filterRestaurants.bind(this);
     }
@@ -22,15 +25,15 @@ export class BuyerHomeComponent1 extends Component {
             itemOrCuisine : itemOrCuisine
         });
     }
-    /*componentDidMount(){
+    componentDidMount(){
         this.getCuisineList();
-    }*/
+    }
     async filterRestaurants(){
         var itemOrCuisine =  this.state.itemOrCuisine;
         axios.defaults.withCredentials = true;
         await axios({
             method: 'post',
-            url: "http://localhost:3001/filterRestaurants",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/filterRestaurants",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {"itemOrCuisine" : this.state.itemOrCuisine},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -45,18 +48,23 @@ export class BuyerHomeComponent1 extends Component {
                 //swal(responseData.responseMessage + " Try logging in.");
                 //console.log("after response...");
                 //console.log(cookie.load('cookie1'));
+                this.setState({
+                    restaurantsList : responseData.message,
+                    isCuisineFilterPresent : true
+                })
                 this.props.searchHandler(responseData.message);
             }).catch(function (err) {
                 console.log(err)
             });
     }
     getCuisineList= async()=>{
+        debugger;
         var itemOrCuisine =  this.state.itemOrCuisine;
         axios.defaults.withCredentials = true;
         let buyer_id = getBuyerID();
         await axios({
             method: 'post',
-            url: "http://localhost:3001/getCuisineList",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getCuisineList",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id},
             config: { headers: { 'Content-Type': 'application/json' } }
@@ -109,7 +117,49 @@ export class BuyerHomeComponent1 extends Component {
                     </Col>
                 </Row>*/
     render(){
-        
+        let filterByCuisine = (selectedCuisine) =>{
+            let restaurantsList = this.state.restaurantsList;
+            if(restaurantsList && restaurantsList.length > 0){
+                let restaurantsListNew = restaurantsList.filter((restaurant)=>{
+                    if(restaurant.owner_restCuisine === selectedCuisine) {
+                        return true
+                     } else {
+                        return false;
+                    }
+                });
+                this.props.searchHandler(restaurantsListNew);
+            }
+           
+        }
+        let changeHandler = (evt) =>{
+            debugger;
+            console.log(evt.target);
+            let cuisineVal = evt.target.value;
+            filterByCuisine(cuisineVal);
+        }
+        let showDropdown = () =>{
+            if(this.state.isCuisineFilterPresent){
+                let cuisineList = this.state.cuisineList;
+                let allCuisineArr = [];
+                for(let i=0; i<cuisineList.length; i++){
+                    let cuisine = cuisineList[i]["owner_restCuisine"];
+                    allCuisineArr.push(<option key={i} value = {cuisine} >{cuisine}</option>);
+                }
+                return(
+                    <Row>
+                         <Col>
+                            <h5>Filter by cuisine</h5>
+                        </Col>
+                        <Col>
+                            <select name="cuisine" onChange={changeHandler}>
+                            {allCuisineArr}
+                            </select>
+                        </Col>
+                    </Row>
+                )
+            }
+        }
+
         return(
             <div className="jumbotron buyerHomeComponent1">
             <Container>
@@ -131,6 +181,8 @@ export class BuyerHomeComponent1 extends Component {
                     </Col>
                 </Row>
                 
+                    {showDropdown()}
+               
             </Container>
         </div>
         );

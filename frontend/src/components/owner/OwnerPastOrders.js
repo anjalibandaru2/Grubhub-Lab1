@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import {Card} from 'react-bootstrap';
 import {Button, Container, Row, Col} from 'react-bootstrap';
 import axios from 'axios';
-import {getOwnerID, CheckValidBuyer} from "../genericapis.js";
+import {getOwnerID, CheckValidOwner} from "../genericapis.js";
 import OwnerNavbar from "./OwnerNavbar.js";
 
 export class OwnerPastOrders extends Component {
@@ -23,7 +23,7 @@ export class OwnerPastOrders extends Component {
         }
         await axios({
             method: 'post',
-            url: "http://localhost:3001/ownerPastOrders",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/ownerPastOrders",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {owner_id : owner_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -68,10 +68,11 @@ export class OwnerPastOrders extends Component {
             return (
                 <Card key={index}>
                     <Card.Body>
-                        <Card.Title><h2>{order.owner_restName}</h2></Card.Title>
+                        <Card.Title><h2>{order.buyer_name}</h2></Card.Title>
                        <h6>Order status : {order.order_status}</h6>
 
                        {renderItemsInOrder(order.items)}
+                       <Row><Col><h6>Total Price : {order.totalPrice}</h6></Col></Row>
                     </Card.Body>
                 </Card>
             );
@@ -96,7 +97,7 @@ export class OwnerPastOrders extends Component {
                 console.log(this.state.pastOrders);
                 return(
                     <div>
-                        <CheckValidBuyer/>
+                        <CheckValidOwner/>
                          <OwnerNavbar/>
                          <Container>
                         <Card>YOUR ORDERS</Card>

@@ -28,7 +28,7 @@ class AddSectionTemplate extends Component{
             section_type : this.state.section_type
          };
         axios.defaults.withCredentials = true;
-        axios.post("http://localhost:3001/addSectionToMenu", data).then((response) => {
+        axios.post("http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/addSectionToMenu", data).then((response) => {
             if (response.status >= 500) {
                 throw new Error("Bad response from server");
             }
@@ -109,7 +109,7 @@ class MenuType extends Component{
     deleteSection(section_id){
         axios.defaults.withCredentials = true;
         let data = {owner_id : getOwnerID(), section_id }
-        axios.post("http://localhost:3001/deleteSection", data).then((response) => {
+        axios.post("http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/deleteSection", data).then((response) => {
             if (response.status >= 500) {
                 throw new Error("Bad response from server");
             }
@@ -201,7 +201,7 @@ export class OwnerMenu extends Component{
         //var owner_id = cookie.load("user_id");
         let owner_id = getOwnerID();
         var data = {owner_id};
-        axios.post("http://localhost:3001/getAllMenuItems", data).then((response) => {
+        axios.post("http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getAllMenuItems", data).then((response) => {
             if (response.status >= 500) {
                 throw new Error("Bad response from server");
             }

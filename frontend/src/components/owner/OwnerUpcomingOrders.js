@@ -2,8 +2,9 @@ import React,{Component} from "react";
 import {Card} from 'react-bootstrap';
 import {Button, Container, Row, Col} from 'react-bootstrap';
 import axios from 'axios';
-import {getBuyerID, getOwnerID} from "../genericapis.js";
+import {getOwnerID, CheckValidOwner} from "../genericapis.js";
 import UpdateOrderModal from "./UpdateOrderModal.js";
+import OwnerNavbar from "./OwnerNavbar.js";
 
 export class OwnerUpcomingOrders extends Component {
     state={
@@ -26,7 +27,7 @@ export class OwnerUpcomingOrders extends Component {
         }
         await axios({
             method: 'post',
-            url: "http://localhost:3001/ownerUpcomingOrders",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/ownerUpcomingOrders",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {owner_id : owner_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -71,6 +72,34 @@ export class OwnerUpcomingOrders extends Component {
        // let addCartModal = document.getElementById("addCartModal");
         //addCartModal.modal("toggle");
     }
+    cancelOrder = async(order_id) =>{
+         //axios req to server
+         let data = {
+             "order_id" : order_id, 
+             order_status : "cancelled"
+         }
+         await axios({
+             method: 'post',
+             url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/updateOrderStatus",        
+             data,
+             config: { headers: { 'Content-Type': 'multipart/form-data' } }
+         })
+             .then((response) => {
+                 if (response.status >= 500) {
+                     throw new Error("Bad response from server");
+                 }
+                 return response.data;
+             })
+             .then((responseData) => {
+                 //swal(responseData.responseMessage + " Try logging in.");
+                 //console.log("after response...");
+                 console.log(responseData.message);
+                 alert(responseData.message);
+                 //window.location.reload();
+             }).catch(function (err) {
+                 console.log(err)
+             });
+    }
     renderUpcomingOrders=()=>{
         let renderItemsInOrder = (items) =>{
             let itermsArr = [];
@@ -97,10 +126,13 @@ export class OwnerUpcomingOrders extends Component {
                             <h5> Address : {order.buyer_address}</h5>
                         </Card.Title>
                        <h6>Order status : {order.order_status}</h6>
+                       <Row>
+                           <Col> <h6>Total Price : {order.totalPrice}</h6> </Col>
+                        </Row>
                        {renderItemsInOrder(order.items)}
                        <Row>
                             <Col xs={2} className="offset-md-8"><button className="btn btn-success" onClick={()=>this.toggleModal(order)}>Update Order</button></Col>
-                            <Col xs={2}><button className="btn btn-success">Cancel Order</button></Col>
+                            <Col xs={2}><button className="btn btn-success" onClick={()=>{this.cancelOrder(order.order_id)}}>Cancel Order</button></Col>
                         </Row>
                     </Card.Body>
                 </Card>
@@ -129,11 +161,15 @@ export class OwnerUpcomingOrders extends Component {
             } else {
                 console.log(this.state.upcomingOrders);
                 return(
-                    <Container>
+                    <div>
+                        <OwnerNavbar/>
+                        <CheckValidOwner/>
+                        <Container>
                         <Card>YOUR UPCOMING ORDERS</Card>
                         {this.renderUpcomingOrders()}
                         <UpdateOrderModal order={this.state.currentOrder}></UpdateOrderModal>
-                    </Container>
+                        </Container>
+                    </div>
                 );
             }
         }   

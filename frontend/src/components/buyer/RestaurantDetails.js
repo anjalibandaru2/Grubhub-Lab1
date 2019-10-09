@@ -2,7 +2,9 @@ import React,{ Component } from "react";
 import {Card, Container, Col,  Row} from 'react-bootstrap';
 import axios from 'axios';
 import BuyerModal from "./BuyerModal.js";
+import {getBuyerID, isFieldEmpty, CheckValidBuyer} from "../genericapis.js";
 import $ from 'jquery';
+import BuyerNavbar from "./BuyerNavbar.js";
 
 export class RestaurantDetails extends Component {
     state = {
@@ -19,7 +21,7 @@ export class RestaurantDetails extends Component {
         console.log(this.props);
         await axios({
             method: 'post',
-            url: "http://localhost:3001/getRestaurantDetails",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getRestaurantDetails",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {"owner_id" : this.props.match.params.owner_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -81,7 +83,8 @@ export class RestaurantDetails extends Component {
        for(let menuType in menuItems){
            let menuList = menuItems[menuType];
            let menuComponents = renderMenuComponents(menuList);
-           allComponents.push(<div key = {menuType}><h5>{menuType}</h5>{menuComponents} </div>);
+           //allComponents.push(<div key = {menuType}><h5>{menuType}</h5>{menuComponents} </div>);
+           allComponents.push(<div key = {menuType}>{menuComponents} </div>);
        }
         
         return allComponents;
@@ -122,6 +125,8 @@ export class RestaurantDetails extends Component {
         }
         return (
             <div>
+                <CheckValidBuyer/>
+                <BuyerNavbar/>
                  {renderComponent()}
                  <BuyerModal item={this.state.currentItem}></BuyerModal>
             </div>

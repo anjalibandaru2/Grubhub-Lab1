@@ -45,7 +45,7 @@ var ownerUpcomingOrders = async(owner_id) =>{
         if(conn){
             await conn.query("START TRANSACTION");
             //let cartItems = await conn.query('select owner_restName, item_name, item_description, item_quantity, item_calculatedPrice from owner_details, orders, order_details where orders.buyer_id=? and orders.order_id = order_details.order_id and orders.owner_id = owner_details.owner_id',[buyer_id]);
-            let ordersList = await conn.query('select order_id, buyer_id, order_status from orders where owner_id = ? and order_status != ?',[owner_id, "delivered"]);
+            let ordersList = await conn.query('select order_id, buyer_id, order_status, totalPrice from orders where owner_id = ? and order_status != ? and order_status != ? ',[owner_id, "delivered", "cancelled"]);
             let ordersArr = [];
             console.log(ordersList);
             for(let index = 0; index < ordersList.length; index++){
@@ -53,6 +53,7 @@ var ownerUpcomingOrders = async(owner_id) =>{
                 let buyer_id = order.buyer_id;
                 let order_id = order.order_id;
                 let order_status = order.order_status;
+                let totalPrice = order.totalPrice;
                 let queryObj = await conn.query('select buyer_name, buyer_address from buyer_details where buyer_id = ?',[buyer_id]);
                 let buyer_name = queryObj[0].buyer_name;
                 let buyer_address = queryObj[0].buyer_address;
@@ -69,7 +70,8 @@ var ownerUpcomingOrders = async(owner_id) =>{
                     buyer_address : buyer_address,
                     order_status : order_status,
                     order_id : order_id,
-                    items : itemsArr
+                    items : itemsArr,
+                    totalPrice
                 };
                 ordersArr.push(orderEle);
             }
@@ -104,7 +106,7 @@ var ownerPastOrders = async(owner_id) =>{
         if(conn){
             await conn.query("START TRANSACTION");
             //let cartItems = await conn.query('select owner_restName, item_name, item_description, item_quantity, item_calculatedPrice from owner_details, orders, order_details where orders.buyer_id=? and orders.order_id = order_details.order_id and orders.owner_id = owner_details.owner_id',[buyer_id]);
-            let ordersList = await conn.query('select order_id, buyer_id, order_status from orders where owner_id = ? and order_status = ?',[owner_id, "delivered"]);
+            let ordersList = await conn.query('select order_id, buyer_id, order_status, totalPrice from orders where owner_id = ? and ( order_status = ? or order_status = ?)',[owner_id, "delivered", "cancelled"]);
             let ordersArr = [];
             console.log(ordersList);
             for(let index = 0; index < ordersList.length; index++){
@@ -112,6 +114,7 @@ var ownerPastOrders = async(owner_id) =>{
                 let buyer_id = order.buyer_id;
                 let order_id = order.order_id;
                 let order_status = order.order_status;
+                let totalPrice = order.totalPrice;
                 let queryObj = await conn.query('select buyer_name, buyer_address from buyer_details where buyer_id = ?',[buyer_id]);
                 let buyer_name = queryObj[0].buyer_name;
                 let buyer_address = queryObj[0].buyer_address;
@@ -128,7 +131,8 @@ var ownerPastOrders = async(owner_id) =>{
                     buyer_address : buyer_address,
                     order_status : order_status,
                     order_id : order_id,
-                    items : itemsArr
+                    items : itemsArr,
+                    totalPrice
                 };
                 ordersArr.push(orderEle);
             }
@@ -155,9 +159,8 @@ var ownerPastOrders = async(owner_id) =>{
     }   
 }
 
-
 module.exports = {
     updateOrderStatus : updateOrderStatus,
     ownerUpcomingOrders : ownerUpcomingOrders,
-    ownerPastOrders : ownerPastOrders
+    ownerPastOrders : ownerPastOrders 
 }

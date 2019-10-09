@@ -23,7 +23,7 @@ export class BuyerPastOrders extends Component {
         }
         await axios({
             method: 'post',
-            url: "http://localhost:3001/buyerPastOrders",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/buyerPastOrders",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -50,6 +50,7 @@ export class BuyerPastOrders extends Component {
     renderPastOrders=()=>{
         let renderItemsInOrder = (items) =>{
             let itermsArr = [];
+            
             for(let i=0; i<items.length; i++){
                 let item = items[i];
                 itermsArr.push(
@@ -61,7 +62,14 @@ export class BuyerPastOrders extends Component {
                 )
             }
             return(
-                itermsArr
+                <div>
+                     <Row>
+                    <Col xs={3}>Item Name</Col>
+                    <Col xs={3}>Quantity</Col>
+                    <Col xs={3}>Calculated Price</Col>
+                </Row>
+                {itermsArr}
+                </div>
             );
         }
         let renderEachOrder = function(order,index){
@@ -69,9 +77,9 @@ export class BuyerPastOrders extends Component {
                 <Card key={index}>
                     <Card.Body>
                         <Card.Title><h2>{order.owner_restName}</h2></Card.Title>
-                       <h6>Order status : {order.order_status}</h6>
-
+                       <Row><h6>Order status : {order.order_status}</h6> </Row>
                        {renderItemsInOrder(order.items)}
+                       <Row> <h6> Total Price : {order.totalPrice} </h6> </Row>
                     </Card.Body>
                 </Card>
             );
@@ -91,7 +99,12 @@ export class BuyerPastOrders extends Component {
         }
         if(this.state.isRendered){
             if(typeof this.state.pastOrders === "undefined" || this.state.pastOrders.length == 0){
-                return <div>No past orders</div>
+                return (
+                <div>
+                    <CheckValidBuyer/>
+                    <BuyerNavbar/>
+                    <h6>No past orders </h6>
+                </div>)
             } else {
                 console.log(this.state.pastOrders);
                 return(
@@ -106,6 +119,7 @@ export class BuyerPastOrders extends Component {
                 );
             }
         }   
+
     }
 }
 export default BuyerPastOrders;

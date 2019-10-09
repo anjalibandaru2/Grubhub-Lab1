@@ -1,6 +1,6 @@
 const dbConnPool = require("./dbConnPool");
 
-var placeOrder =  async (buyer_id) =>{
+var placeOrder =  async (buyer_id, totalPrice) =>{
     let conn;
     let message = "";
     let status = false;
@@ -19,7 +19,8 @@ var placeOrder =  async (buyer_id) =>{
             let orderObj = {
                 buyer_id : buyer_id, 
                 owner_id : owner_id,
-                order_status : "new"
+                order_status : "new",
+                totalPrice : totalPrice
             };
             console.log(orderObj);
             var insertedRow = await  conn.query('INSERT INTO orders SET ?', [orderObj]);
@@ -66,13 +67,14 @@ var buyerUpcomingOrders = async(buyer_id) =>{
         if(conn){
             await conn.query("START TRANSACTION");
             //let cartItems = await conn.query('select owner_restName, item_name, item_description, item_quantity, item_calculatedPrice from owner_details, orders, order_details where orders.buyer_id=? and orders.order_id = order_details.order_id and orders.owner_id = owner_details.owner_id',[buyer_id]);
-            let ordersList = await conn.query('select order_id,owner_id, order_status from orders where buyer_id = ? and order_status != ?',[buyer_id, "delivered"]);
+            let ordersList = await conn.query('select order_id,owner_id, order_status, totalPrice from orders where buyer_id = ? and order_status != ? and order_status != ?',[buyer_id, "delivered", "cancelled"]);
             let ordersArr = [];
             console.log(ordersList);
             for(let index = 0; index < ordersList.length; index++){
                 let order = ordersList[index];
                 let owner_id = order.owner_id;
                 let order_id = order.order_id;
+                let totalPrice = order.totalPrice;
                 let order_status = order.order_status;
                 let queryObj = await conn.query('select owner_restName from owner_details where owner_id = ?',[owner_id]);
                 console.log("query details");
@@ -94,7 +96,8 @@ var buyerUpcomingOrders = async(buyer_id) =>{
                 let orderEle = {
                     owner_restName : owner_restName,
                     order_status : order_status,
-                    items : itemsArr
+                    items : itemsArr,
+                    totalPrice :totalPrice
                 };
                 ordersArr.push(orderEle);
             }
@@ -129,14 +132,15 @@ var buyerPastOrders = async(buyer_id) =>{
         if(conn){
             await conn.query("START TRANSACTION");
             //let cartItems = await conn.query('select owner_restName, item_name, item_description, item_quantity, item_calculatedPrice from owner_details, orders, order_details where orders.buyer_id=? and orders.order_id = order_details.order_id and orders.owner_id = owner_details.owner_id',[buyer_id]);
-            let ordersList = await conn.query('select order_id,owner_id, order_status from orders where buyer_id = ? and order_status = ?',[buyer_id, "delivered"]);
+            let ordersList = await conn.query('select order_id,owner_id, order_status, totalPrice from orders where buyer_id = ? and order_status = ? or order_status = ?',[buyer_id, "delivered", "cancelled"]);
             let ordersArr = [];
             console.log(ordersList);
             for(let index = 0; index < ordersList.length; index++){
                 let order = ordersList[index];
-                let owner_id = order.owner_id;
+                /*let owner_id = order.owner_id;
                 let order_id = order.order_id;
-                let order_status = order.order_status;
+                let order_status = order.order_status;*/
+                let{owner_id, order_id, order_status, totalPrice} = order;
                 let queryObj = await conn.query('select owner_restName from owner_details where owner_id = ?',[owner_id]);
                 console.log("query details");
                 console.log(queryObj);
@@ -157,7 +161,8 @@ var buyerPastOrders = async(buyer_id) =>{
                 let orderEle = {
                     owner_restName : owner_restName,
                     order_status : order_status,
-                    items : itemsArr
+                    items : itemsArr,
+                    totalPrice
                 };
                 ordersArr.push(orderEle);
             }

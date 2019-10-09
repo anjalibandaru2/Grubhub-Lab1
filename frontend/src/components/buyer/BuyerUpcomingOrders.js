@@ -23,7 +23,7 @@ export class BuyerUpcomingOrders extends Component {
         }
         await axios({
             method: 'post',
-            url: "http://localhost:3001/buyerUpcomingOrders",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/buyerUpcomingOrders",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -72,6 +72,7 @@ export class BuyerUpcomingOrders extends Component {
                        <h6>Order status : {order.order_status}</h6>
 
                        {renderItemsInOrder(order.items)}
+                       <h6>Total price : {order.totalPrice}</h6>
                     </Card.Body>
                 </Card>
             );
@@ -91,7 +92,12 @@ export class BuyerUpcomingOrders extends Component {
         }
         if(this.state.isRendered){
             if(typeof this.state.upcomingOrders === "undefined" || this.state.upcomingOrders.length == 0){
-                return <div>No upcoming orders</div>
+               // return (<div>No upcoming orders</div>)
+                return(<div>
+                    <CheckValidBuyer/>
+                    <BuyerNavbar/>
+                    <h6>No upcoming orders </h6>
+                </div>)
             } else {
                 console.log(this.state.upcomingOrders);
                 return(

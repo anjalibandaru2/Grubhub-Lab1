@@ -9,7 +9,7 @@ function BuyerNavbar(){
      return (
          <div>
         
-         <Navbar className="buyerTopNav">
+         <Navbar className="buyerTopNav ">
             <img src={grubhubImg}/>
              <Nav className="ml-auto">     
                  <div className="float-right"><Nav.Link className = "buyerTopNavElement float-right" href="/buyerProfile"> Hi, {name}</Nav.Link></div>

@@ -36,8 +36,7 @@ export class BuyerModal extends Component{
             item_name : props.item.item_name,
             item_description : props.item.item_description,
             item_price : props.item.item_price,
-            item_id : props.item.item_id,
-            calculatedPrice :  props.item.item_price
+            item_id : props.item.item_id
           };
         }
         // Return null to indicate no change to state.
@@ -49,6 +48,7 @@ export class BuyerModal extends Component{
           this.setState({item : newProps.item});
       }*/
       incrementQuantity=()=>{
+          debugger;
         console.log("increment called..");
         let newQuantity  = this.state.item_quantity + 1;
         let calculatedPrice = newQuantity * this.state.item_price;
@@ -58,6 +58,10 @@ export class BuyerModal extends Component{
         });
     }
     decrementQuantity=()=>{
+        debugger;
+        if(this.state.item_quantity ==1){
+            return;
+        }
         let newQuantity  = this.state.item_quantity - 1;
         let calculatedPrice = newQuantity * this.state.item_price;
         this.setState({
@@ -78,7 +82,7 @@ export class BuyerModal extends Component{
         let buyer_id = getBuyerID();
         await axios({
             method: 'post',
-            url: "http://localhost:3001/addToCart",
+            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/addToCart",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {"item_id" : this.state.item_id, buyer_id : buyer_id, item_calculatedPrice : this.state.calculatedPrice, item_quantity : this.state.item_quantity},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -124,7 +128,7 @@ export class BuyerModal extends Component{
 
                 </div>
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-success" onClick = {this.addItemToCart} data-dismiss="modal">Add to cart</button>
+                    <button type="button" className="btn btn-success" onClick = {this.addItemToCart}>Add to cart</button>
                     <button type="button" className="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
                 </div>

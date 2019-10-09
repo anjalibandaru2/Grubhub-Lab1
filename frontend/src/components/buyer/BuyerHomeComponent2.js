@@ -8,7 +8,7 @@ export class BuyerHomeComponent2 extends Component{
     render(){
         return(
             <Container>   
-                <BuyerUpcomingOrders/>
+                
             </Container>
         );
     }
