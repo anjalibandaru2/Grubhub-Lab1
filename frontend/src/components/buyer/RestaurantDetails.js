@@ -21,7 +21,7 @@ export class RestaurantDetails extends Component {
         console.log(this.props);
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getRestaurantDetails",
+            url: "http://54.147.235.117:3001/getRestaurantDetails",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {"owner_id" : this.props.match.params.owner_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }

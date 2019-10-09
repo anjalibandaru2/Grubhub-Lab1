@@ -26,7 +26,7 @@ export class Cart extends Component{
         }
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getCart",
+            url: "http://54.147.235.117:3001/getCart",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -60,7 +60,7 @@ export class Cart extends Component{
         };
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/placeOrder",
+            url: "http://54.147.235.117:3001/placeOrder",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id, totalPrice : this.state.totalPrice},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }

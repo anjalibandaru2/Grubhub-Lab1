@@ -82,7 +82,7 @@ export class BuyerModal extends Component{
         let buyer_id = getBuyerID();
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/addToCart",
+            url: "http://54.147.235.117:3001/addToCart",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {"item_id" : this.state.item_id, buyer_id : buyer_id, item_calculatedPrice : this.state.calculatedPrice, item_quantity : this.state.item_quantity},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }

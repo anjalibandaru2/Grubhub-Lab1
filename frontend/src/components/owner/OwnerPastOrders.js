@@ -23,7 +23,7 @@ export class OwnerPastOrders extends Component {
         }
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/ownerPastOrders",
+            url: "http://54.147.235.117:3001/ownerPastOrders",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {owner_id : owner_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }

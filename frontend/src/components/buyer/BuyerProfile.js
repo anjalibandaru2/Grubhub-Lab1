@@ -40,7 +40,7 @@ class NonImageElement extends Component{
         }
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/updateBuyerProfile",
+            url: "http://54.147.235.117:3001/updateBuyerProfile",
             // data: {"jsonData" : JSON.stringify(data)},        
             data,
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -153,7 +153,7 @@ class ProfileImage extends Component{
         console.log(evt.target.elements["buyer_profileImage"].files[0]);
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/updateBuyerProfileImage",
+            url: "http://54.147.235.117:3001/updateBuyerProfileImage",
             // data: {"jsonData" : JSON.stringify(data)},        
             data,
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -241,7 +241,7 @@ export class BuyerProfile extends Component{
         }
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/getBuyerProfile",
+            url: "http://54.147.235.117:3001/getBuyerProfile",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: {buyer_id : buyer_id},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }

@@ -24,7 +24,7 @@ export class SignIn extends Component{
         axios.defaults.withCredentials = true;
         await axios({
             method: 'post',
-            url: "http://ec2-54-147-235-117.compute-1.amazonaws.com:3001/signin",
+            url: "http://54.147.235.117:3001/signin",
             // data: {"jsonData" : JSON.stringify(data)},        
             data: { "email": formData.get('email'), "password": formData.get('password'), "userType" : formData.get('userType')},
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
