@@ -1,0 +1,67 @@
+div.jumbotron.buyerHomeComponent1 {
+    background-image : url(/images/buyerHomeComponent1.JPG);
+}
+.fas {
+    font-family : "Font Awesome 5 Pro";
+}
+.fas-search {
+    content : "\\f002";
+}
+/*.restaurant_item {
+    background-color : ""
+}*/
+.card.restaurant_item:hover {
+    z-index: auto;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.05);
+}
+.card.restaurant_item{
+    margin : 10px;
+    width : 100%;
+}
+.restaurantLink{
+    text-decoration : none;
+}
+.restaurantLink:hover{
+    text-decoration : none;
+}
+.restaurantDetails{
+    background-image : url(/images/buyerHomeComponent1.JPG);
+    padding-bottom : 0px;
+    margin : 0px;
+    height : 300px
+}
+/*.restaurant_menu_item.card{
+    margin : 10px;
+    width : 100%
+}*/
+input.modifiedInput{
+    border :none;
+    width : 44px;
+}
+.modal-header-element{
+    width : 100%;
+}
+span#quantityValue{
+    margin: 10px;
+}
+span#cart{
+    width:25%;
+}
+div.cartItem{
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    height: 50px;
+    padding-top: 10px;
+}
+/*BUYER PROFILE CSS*/
+.profileElement{
+padding : 10px;
+}
+/* BUYER NAV BAR*/
+.buyerTopNavElement{
+    padding-top : 20px;
+}
+.buyerTopNav{
+    box-shadow: 0 0 0 1px rgba(67,41,163,.08), 0 1px 5px 0 rgba(67,41,163,.08);
+}

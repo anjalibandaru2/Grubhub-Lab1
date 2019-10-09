@@ -1,0 +1,84 @@
+/*.App {
+  text-align: center;
+}*/
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+/*CSS related to grubhub home*/
+.grubhubHome{
+margin : auto;
+padding: auto;
+}
+.grubhubHome .jumbotron{
+  margin-bottom : 0px;
+}
+#aboutGrubhub{
+padding-left: 90px;
+padding-top: 50px;
+}
+a:hover{
+  text-decoration:none !important;
+}
+a{
+  color : darkgreen;
+}
+
+#grubhubsigninLink{
+  float : right;
+  padding-right:50px;
+  padding-top : 50px;
+  color : darkgreen;
+}
+
+#grubhubMessage{
+  padding : 150px;
+}
+
+#grubhubMessage > h1{
+  font-family : cursive;
+  font-weight : 900;
+  line-height: inherit;
+}
+/*CSS related to login page*/
+
+.signup_signin_panel .signupsignin-card {
+  padding : 50px;
+  margin-left:300px;
+  margin-right:200px;
+  margin-top:100px;
+  box-shadow: 0 0 0 1px rgba(67,41,163,.08), 0 1px 5px 0 rgba(67,41,163,.08);
+}
+#SignInText{
+  text-align : center;
+}
+.signup_signin_panel .btn {
+  width : 100%;
+}
+.signup_signin_panel a{
+    color : darkgreen !important;
+}
+#grubhubFixedTop{
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+}
+.sticky-top {
+  background-color: white;
+}

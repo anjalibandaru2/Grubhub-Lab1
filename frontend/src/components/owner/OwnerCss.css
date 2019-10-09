@@ -1,0 +1,47 @@
+/* CSS styles for menu */
+#menuAdd{
+    cursor : pointer;
+}
+.ownerTopNav{
+    box-shadow: 0 0 0 1px rgba(67,41,163,.08), 0 1px 5px 0 rgba(67,41,163,.08);
+}
+
+.container{
+    z-index: 0 !important;
+}
+
+.sticky-top{
+    z-index:1000 !important;
+}
+
+.menuItem{
+    margin-left : 40px;
+    margin-right : 30px;
+    margin-bottom : 10px;
+    margin-top : 10px;
+    padding : 5px;
+    width : 40%;
+    border : 1px solid rgba(0, 0, 0, 0.125);
+    height: 200px;
+    max-height: 200px;
+    overflow: hidden;
+}
+.itemDescription{
+    word-break: break-all;
+}
+.item_image{
+    width :150px;
+}
+.menu-content{
+    width : 100%
+}
+.menu-title{
+    text-transform: capitalize
+}
+.menuItem .media-right{
+    display : inline
+}
+#addSection{
+    margin-top : 30px;
+    margin-bottom : 30px;
+}
